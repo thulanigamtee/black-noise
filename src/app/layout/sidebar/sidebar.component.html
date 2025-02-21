@@ -1,0 +1,20 @@
+<aside class="grid gap-2">
+  <ul class="flex flex-col gap-y-4 rounded-lg">
+    @for(route of routes; track $index) {
+    <li class="flex flex-col items-center gap-y-2">
+      <a
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        [routerLink]="route.path"
+        class="cursor-pointer hover:bg-secondary rounded-full p-3 w-12 h-12"
+      >
+        <ng-icon hlm size="base" [name]="route.icon" />
+      </a>
+      <span class="text-xs capitalize">{{ route.name }}</span>
+    </li>
+    }
+  </ul>
+  <!-- <button hlmBtn class="rounded-full cursor-pointert">
+    <ng-icon hlm size="base" name="lucidePlus" />
+  </button> -->
+</aside>
