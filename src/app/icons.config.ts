@@ -3,6 +3,8 @@ import {
   lucideCompass,
   lucideHouse,
   lucideLibrary,
+  lucideLogIn,
+  lucideLogOut,
   lucideMoon,
   lucideMusic2,
   lucidePlus,
@@ -17,6 +19,8 @@ export const icons = {
   lucideCompass,
   lucideLibrary,
   lucideMoon,
+  lucideLogIn,
+  lucideLogOut,
 };
 
 export const provideAppIcons = provideIcons(icons);
