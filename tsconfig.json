@@ -39,6 +39,9 @@
       ],
       "@spartan-ng/ui-menu-helm": [
         "./src/app/shared/ui/ui-menu-helm/src/index.ts"
+      ],
+      "@spartan-ng/ui-sonner-helm": [
+        "./src/app/shared/ui/ui-sonner-helm/src/index.ts"
       ]
     }
   },
