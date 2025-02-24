@@ -12,21 +12,36 @@
       />
     </div>
   </div>
-  <div class="flex gap-x-4">
-    <!-- <hlm-avatar class="w-12 h-12">
-      <img
-        src="/assets/avatar.png"
-        alt="spartan logo. Resembling a spartanic shield"
-        hlmAvatarImage
-      />
-      <span class="text-white bg-destructive" hlmAvatarFallback>RG</span>
-    </hlm-avatar> -->
-    <div class="flex items-center justify-center w-full">
+  <div class="flex gap-x-4 items-center">
+    @if(user) {
+    <hlm-avatar
+      [hlmTooltipTrigger]="user.firstName"
+      aria-describedby="avatar tooltip"
+    >
+      <img [src]="user.imageUrl" [alt]="user.firstName" hlmAvatarImage />
+    </hlm-avatar>
+    }
+    <div class="flex items-center justify-center">
+      <button
+        hlmBtn
+        variant="ghost"
+        class="rounded-full cursor-pointer"
+        size="icon"
+        (click)="user ? signOut() : signIn()"
+        [hlmTooltipTrigger]="user ? 'sign out' : 'sign in'"
+        aria-describedby="'sign in/sign out tooltip'"
+      >
+        <ng-icon
+          hlm
+          size="base"
+          [name]="user ? 'lucideLogOut' : 'lucideLogIn'"
+        />
+      </button>
       <button
         hlmBtn
         variant="ghost"
         [brnMenuTriggerFor]="menu"
-        class="w-12 h-12 rounded-full cursor-pointer"
+        class="rounded-full cursor-pointer"
         size="icon"
       >
         <ng-icon hlm size="base" name="lucideMoon" />
@@ -35,33 +50,17 @@
     <ng-template #menu>
       <hlm-menu class="w-fit">
         <hlm-menu-group>
+          @for(colorScheme of colorSchemes; track $index) {
           <button
             hlmMenuItemCheckbox
-            [checked]="colorScheme === 'light'"
-            (triggered)="(colorScheme === 'light')"
-            (click)="setColorScheme('light')"
+            [checked]="activeColorScheme === colorScheme"
+            (triggered)="(activeColorScheme === colorScheme)"
+            (click)="setColorScheme(colorScheme)"
           >
             <hlm-menu-item-check />
-            <span>Light</span>
+            <span class="capitalize">{{ colorScheme }}</span>
           </button>
-          <button
-            hlmMenuItemCheckbox
-            [checked]="colorScheme === 'dark'"
-            (triggered)="(colorScheme === 'dark')"
-            (click)="setColorScheme('dark')"
-          >
-            <hlm-menu-item-check />
-            <span>Dark</span>
-          </button>
-          <button
-            hlmMenuItemCheckbox
-            [checked]="colorScheme === 'system'"
-            (triggered)="(colorScheme === 'system')"
-            (click)="setColorScheme('system')"
-          >
-            <hlm-menu-item-check />
-            <span>System</span>
-          </button>
+          }
         </hlm-menu-group>
       </hlm-menu>
     </ng-template>
