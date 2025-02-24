@@ -10,8 +10,15 @@ import {
   HlmMenuItemCheckboxDirective,
   HlmMenuItemCheckComponent,
 } from '@spartan-ng/ui-menu-helm';
-import { ThemeService } from '../../core/theme.service';
+import { ThemeService } from '../../services/theme.service';
 import { LogoComponent } from '../../shared/components/logo/logo.component';
+import { ClerkService } from '../../services/clerk.service';
+import { UserResource } from '@clerk/types';
+import {
+  HlmAvatarImageDirective,
+  HlmAvatarComponent,
+} from '@spartan-ng/ui-avatar-helm';
+import { HlmTooltipTriggerDirective } from '@spartan-ng/ui-tooltip-helm';
 
 @Component({
   selector: 'app-header',
@@ -28,16 +35,38 @@ import { LogoComponent } from '../../shared/components/logo/logo.component';
     HlmButtonDirective,
     HlmIconDirective,
     LogoComponent,
+    HlmAvatarComponent,
+    HlmAvatarImageDirective,
+    HlmTooltipTriggerDirective,
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })
 export class HeaderComponent {
+  clerkService = inject(ClerkService);
+  user: UserResource | null = null;
+
   themeService = inject(ThemeService);
-  colorScheme = 'system';
+  activeColorScheme = 'system';
+
+  colorSchemes: ('light' | 'dark' | 'system')[] = ['light', 'dark', 'system'];
+
+  ngOnInit(): void {
+    this.clerkService.user$.subscribe((user) => {
+      this.user = user;
+    });
+  }
 
   setColorScheme(scheme: 'light' | 'dark' | 'system') {
-    this.colorScheme = scheme;
+    this.activeColorScheme = scheme;
     this.themeService.setTheme(scheme);
+  }
+
+  signIn() {
+    this.clerkService.openSignIn();
+  }
+
+  signOut() {
+    this.clerkService.signOut();
   }
 }
