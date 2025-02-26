@@ -1,4 +1,4 @@
-<aside class="grid gap-2">
+<aside class="grid gap-6">
   <ul class="flex flex-col gap-y-4 rounded-lg">
     @for(route of routes; track $index) {
     <li class="flex flex-col items-center gap-y-2">
@@ -14,7 +14,23 @@
     </li>
     }
   </ul>
-  <!-- <button hlmBtn class="rounded-full cursor-pointert">
-    <ng-icon hlm size="base" name="lucidePlus" />
-  </button> -->
+  <hlm-dialog #dialogRef>
+    <button
+      id="add-song"
+      brnDialogTrigger
+      hlmBtn
+      class="cursor-pointer"
+      size="icon"
+      [hlmTooltipTrigger]="'add song'"
+      aria-describedby="'add song button'"
+    >
+      <ng-icon hlm size="base" name="lucidePlus" />
+    </button>
+    <hlm-dialog-content class="sm:max-w-[425px]" *brnDialogContent="let ctx">
+      <hlm-dialog-header>
+        <h3 hlmDialogTitle>Add Song</h3>
+      </hlm-dialog-header>
+      <app-add-song-form />
+    </hlm-dialog-content>
+  </hlm-dialog>
 </aside>
