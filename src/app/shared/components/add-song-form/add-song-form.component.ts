@@ -13,7 +13,7 @@ import {
 } from '@spartan-ng/ui-formfield-helm';
 import { HlmIconDirective } from '@spartan-ng/ui-icon-helm';
 import { HlmInputDirective } from '@spartan-ng/ui-input-helm';
-import { Song } from './add-song.interface';
+import { Song } from './add-song-model';
 
 @Component({
   selector: 'app-add-song-form',
