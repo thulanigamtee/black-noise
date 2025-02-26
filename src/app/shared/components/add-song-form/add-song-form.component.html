@@ -1,0 +1,50 @@
+<form [formGroup]="form" class="flex flex-col space-y-6">
+  <hlm-form-field>
+    <input
+      aria-label="Title"
+      formControlName="title"
+      class="w-80"
+      hlmInput
+      type="text"
+      placeholder="Enter song title"
+    />
+    <hlm-error>Song title is required</hlm-error>
+  </hlm-form-field>
+  <hlm-form-field>
+    <input
+      aria-label="Author"
+      formControlName="author"
+      class="w-80"
+      hlmInput
+      type="text"
+      placeholder="Enter artist name"
+    />
+    <hlm-error>Author is required</hlm-error>
+  </hlm-form-field>
+  <hlm-form-field>
+    <input
+      aria-label="Thumbnail"
+      formControlName="thumbnail"
+      class="w-80"
+      hlmInput
+      type="file"
+      placeholder="Insert thumbnail"
+    />
+    <hlm-error>Song cover is required</hlm-error>
+  </hlm-form-field>
+  <hlm-form-field>
+    <input
+      aria-label="Audio"
+      formControlName="audio"
+      class="w-80"
+      hlmInput
+      type="file"
+      placeholder="Insert audio file"
+    />
+    <hlm-error>Audio file is required</hlm-error>
+  </hlm-form-field>
+  <button type="submit" hlmBtn class="self-end">
+    <ng-icon hlm size="sm" class="mr-2" name="lucidePlus" />
+    Add song
+  </button>
+</form>
