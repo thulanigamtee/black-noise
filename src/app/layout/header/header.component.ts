@@ -47,7 +47,7 @@ export class HeaderComponent {
   user: UserResource | null = null;
 
   themeService = inject(ThemeService);
-  activeColorScheme = 'system';
+  activeColorScheme: string | null = null;
 
   colorSchemes: ('light' | 'dark' | 'system')[] = ['light', 'dark', 'system'];
 
@@ -55,10 +55,12 @@ export class HeaderComponent {
     this.clerkService.user$.subscribe((user) => {
       this.user = user;
     });
+    this.themeService.theme$.subscribe((theme) => {
+      this.activeColorScheme = theme;
+    });
   }
 
   setColorScheme(scheme: 'light' | 'dark' | 'system') {
-    this.activeColorScheme = scheme;
     this.themeService.setTheme(scheme);
   }
 
