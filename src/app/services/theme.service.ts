@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 
 export type Theme = 'light' | 'dark' | 'system';
 
@@ -8,18 +9,25 @@ export type Theme = 'light' | 'dark' | 'system';
 export class ThemeService {
   private readonly THEME_KEY = 'app-theme';
   private systemMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+  private themeSubject = new BehaviorSubject<Theme>('dark');
+  theme$ = this.themeSubject.asObservable();
 
   constructor() {
     this.loadTheme();
     this.listenToSystemChanges();
   }
 
-  setTheme(theme: 'light' | 'dark' | 'system') {
+  setTheme(theme: Theme) {
     localStorage.setItem(this.THEME_KEY, theme);
     this.applyTheme(theme);
+    this.themeSubject.next(theme);
   }
 
-  private applyTheme(theme: 'light' | 'dark' | 'system') {
+  getTheme(): Theme {
+    return this.themeSubject.getValue();
+  }
+
+  private applyTheme(theme: Theme) {
     const root = document.documentElement;
     root.classList.remove('light', 'dark');
 
@@ -34,21 +42,15 @@ export class ThemeService {
   }
 
   private loadTheme() {
-    const savedTheme = localStorage.getItem(this.THEME_KEY) as
-      | 'light'
-      | 'dark'
-      | 'system'
-      | null;
+    const savedTheme = localStorage.getItem(this.THEME_KEY) as Theme | null;
     this.applyTheme(savedTheme || 'system');
   }
 
   private listenToSystemChanges() {
     this.systemMediaQuery.addEventListener('change', (event) => {
-      const savedTheme = localStorage.getItem(this.THEME_KEY) as Theme;
-      if (savedTheme === 'system') {
-        const root = document.documentElement;
-        root.classList.remove('light', 'dark');
-        root.classList.add(event.matches ? 'dark' : 'light');
+      if (this.themeSubject.getValue() === 'system') {
+        const newTheme = event.matches ? 'dark' : 'light';
+        this.applyTheme(newTheme);
       }
     });
   }
