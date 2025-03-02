@@ -24,6 +24,7 @@
     "@ng-icons/lucide": "^30.3.0",
     "@spartan-ng/brain": "0.0.1-alpha.406",
     "@tailwindcss/postcss": "^4.0.7",
+    "appwrite": "^17.0.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "ngx-sonner": "^2.0.0",
