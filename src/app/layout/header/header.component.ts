@@ -19,6 +19,7 @@ import {
   HlmAvatarComponent,
 } from '@spartan-ng/ui-avatar-helm';
 import { HlmTooltipTriggerDirective } from '@spartan-ng/ui-tooltip-helm';
+import { AppwriteService } from '../../services/appwrite.service';
 
 @Component({
   selector: 'app-header',
@@ -44,6 +45,7 @@ import { HlmTooltipTriggerDirective } from '@spartan-ng/ui-tooltip-helm';
 })
 export class HeaderComponent {
   clerkService = inject(ClerkService);
+  appwriteService = inject(AppwriteService);
   user: UserResource | null = null;
 
   themeService = inject(ThemeService);
@@ -64,11 +66,20 @@ export class HeaderComponent {
     this.themeService.setTheme(scheme);
   }
 
-  signIn() {
-    this.clerkService.openSignIn();
+  async signIn() {
+    try {
+      this.clerkService.openSignIn();
+      this.appwriteService.saveUserData();
+    } catch (error) {
+      console.error('Login failed:', error);
+    }
   }
 
-  signOut() {
-    this.clerkService.signOut();
+  async signOut() {
+    try {
+      await this.clerkService.signOut();
+    } catch (error) {
+      console.error('Sign out failed:', error);
+    }
   }
 }
