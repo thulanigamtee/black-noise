@@ -1,4 +1,4 @@
-<form [formGroup]="form" class="flex flex-col space-y-6">
+<form [formGroup]="form" (ngSubmit)="submit()" class="flex flex-col space-y-6">
   <hlm-form-field>
     <input
       aria-label="Title"
@@ -12,8 +12,8 @@
   </hlm-form-field>
   <hlm-form-field>
     <input
-      aria-label="Author"
-      formControlName="author"
+      aria-label="Artist"
+      formControlName="artist"
       class="w-80"
       hlmInput
       type="text"
@@ -24,22 +24,24 @@
   <hlm-form-field>
     <input
       aria-label="Thumbnail"
-      formControlName="thumbnail"
       class="w-80"
       hlmInput
       type="file"
       placeholder="Insert thumbnail"
+      (change)="onFileSelected($event, 'thumbnail')"
+      accept="images/*"
     />
     <hlm-error>Song cover is required</hlm-error>
   </hlm-form-field>
   <hlm-form-field>
     <input
       aria-label="Audio"
-      formControlName="audio"
       class="w-80"
       hlmInput
       type="file"
       placeholder="Insert audio file"
+      (change)="onFileSelected($event, 'audio')"
+      accept="audio/*"
     />
     <hlm-error>Audio file is required</hlm-error>
   </hlm-form-field>
