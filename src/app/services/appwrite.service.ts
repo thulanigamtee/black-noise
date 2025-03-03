@@ -1,7 +1,8 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Client, Databases, Storage, ID } from 'appwrite';
-import { ClerkService } from './clerk.service';
 import { environment } from '../../environments/environment';
+import { AuthService } from './auth/auth.service';
+import { Song } from '../shared/models/song.model';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +12,9 @@ export class AppwriteService {
   private database: Databases;
   private storage: Storage;
 
-  constructor(private clerkService: ClerkService) {
+  private authService = inject(AuthService);
+
+  constructor() {
     this.client = new Client()
       .setEndpoint(environment.appwrite.endpoint)
       .setProject(environment.appwrite.projectId);
@@ -19,15 +22,13 @@ export class AppwriteService {
     this.database = new Databases(this.client);
     this.storage = new Storage(this.client);
 
-    this.clerkService.user$.subscribe((user) => {
-      if (user) {
-        this.saveUserData();
-      }
+    this.authService.user$.subscribe((user) => {
+      if (user) this.saveUserData();
     });
   }
 
   async saveUserData() {
-    const user = this.clerkService.user;
+    const user = this.authService.user;
     if (!user) return;
 
     const userData = {
@@ -54,7 +55,7 @@ export class AppwriteService {
     return response.$id;
   }
 
-  async saveSong(songData: any) {
+  async saveSong(songData: Song) {
     return this.database.createDocument(
       environment.appwrite.databaseId,
       environment.appwrite.songsCollectionId,
