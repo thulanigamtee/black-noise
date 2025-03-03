@@ -1,48 +1,60 @@
-<form [formGroup]="form" (ngSubmit)="submit()" class="flex flex-col space-y-6">
+<form [formGroup]="form" (ngSubmit)="submit()" class="flex flex-col space-y-4">
   <hlm-form-field>
-    <input
-      aria-label="Title"
-      formControlName="title"
-      class="w-80"
-      hlmInput
-      type="text"
-      placeholder="Enter song title"
-    />
+    <label hlmLabel
+      >Title
+      <input
+        aria-label="Title"
+        formControlName="title"
+        class="w-80"
+        hlmInput
+        type="text"
+        placeholder="Enter song title"
+      />
+    </label>
     <hlm-error>Song title is required</hlm-error>
   </hlm-form-field>
   <hlm-form-field>
-    <input
-      aria-label="Artist"
-      formControlName="artist"
-      class="w-80"
-      hlmInput
-      type="text"
-      placeholder="Enter artist name"
-    />
+    <label hlmLabel
+      >Artist
+      <input
+        aria-label="Artist"
+        formControlName="artist"
+        class="w-80"
+        hlmInput
+        type="text"
+        placeholder="Enter artist name"
+      />
+    </label>
     <hlm-error>Author is required</hlm-error>
   </hlm-form-field>
   <hlm-form-field>
-    <input
-      aria-label="Thumbnail"
-      class="w-80"
-      hlmInput
-      type="file"
-      placeholder="Insert thumbnail"
-      (change)="onFileSelected($event, 'thumbnail')"
-      accept="images/*"
-    />
+    <label hlmLabel
+      >Thumbnail
+      <input
+        aria-label="Thumbnail"
+        class="w-80"
+        hlmInput
+        type="file"
+        placeholder="Insert thumbnail"
+        (change)="onFileSelected($event, 'thumbnail')"
+        accept="images/*"
+      />
+    </label>
     <hlm-error>Song cover is required</hlm-error>
   </hlm-form-field>
   <hlm-form-field>
-    <input
-      aria-label="Audio"
-      class="w-80"
-      hlmInput
-      type="file"
-      placeholder="Insert audio file"
-      (change)="onFileSelected($event, 'audio')"
-      accept="audio/*"
-    />
+    <label hlmLabel
+      >Audio
+      <input
+        aria-label="Audio"
+        class="w-80"
+        hlmInput
+        type="file"
+        placeholder="Insert audio file"
+        (change)="onFileSelected($event, 'audio')"
+        accept="audio/*"
+      />
+    </label>
     <hlm-error>Audio file is required</hlm-error>
   </hlm-form-field>
   <button type="submit" hlmBtn class="self-end">

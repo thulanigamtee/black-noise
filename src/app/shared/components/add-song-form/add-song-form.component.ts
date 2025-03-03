@@ -13,6 +13,7 @@ import {
 } from '@spartan-ng/ui-formfield-helm';
 import { HlmIconDirective } from '@spartan-ng/ui-icon-helm';
 import { HlmInputDirective } from '@spartan-ng/ui-input-helm';
+import { HlmLabelDirective } from '@spartan-ng/ui-label-helm';
 import { Song } from './add-song-model';
 import { AppwriteService } from '../../../services/appwrite.service';
 import { environment } from '../../../../environments/environment';
@@ -25,6 +26,7 @@ import { environment } from '../../../../environments/environment';
     HlmFormFieldComponent,
     HlmErrorDirective,
     HlmInputDirective,
+    HlmLabelDirective,
     HlmButtonDirective,
     HlmIconDirective,
   ],
