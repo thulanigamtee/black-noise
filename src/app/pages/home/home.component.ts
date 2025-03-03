@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ThemeService } from '../../services/theme.service';
+import { ThemeService } from '../../services/theme/theme.service';
 
 @Component({
   selector: 'app-home',
@@ -11,6 +11,6 @@ export class HomeComponent {
   constructor(private themeService: ThemeService) {}
 
   changeTheme(theme: 'light' | 'dark' | 'system') {
-    this.themeService.setTheme(theme);
+    this.themeService.Theme = theme;
   }
 }
