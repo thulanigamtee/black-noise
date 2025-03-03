@@ -10,9 +10,8 @@ import {
   HlmMenuItemCheckboxDirective,
   HlmMenuItemCheckComponent,
 } from '@spartan-ng/ui-menu-helm';
-import { ThemeService } from '../../services/theme.service';
+import { ThemeService } from '../../services/theme/theme.service';
 import { LogoComponent } from '../../shared/components/logo/logo.component';
-import { ClerkService } from '../../services/clerk.service';
 import { UserResource } from '@clerk/types';
 import {
   HlmAvatarImageDirective,
@@ -20,6 +19,7 @@ import {
 } from '@spartan-ng/ui-avatar-helm';
 import { HlmTooltipTriggerDirective } from '@spartan-ng/ui-tooltip-helm';
 import { AppwriteService } from '../../services/appwrite.service';
+import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -44,31 +44,31 @@ import { AppwriteService } from '../../services/appwrite.service';
   styleUrl: './header.component.scss',
 })
 export class HeaderComponent {
-  clerkService = inject(ClerkService);
+  authService = inject(AuthService);
   appwriteService = inject(AppwriteService);
   user: UserResource | null = null;
 
   themeService = inject(ThemeService);
-  activeColorScheme: string | null = null;
+  activeTheme: string | null = null;
 
-  colorSchemes: ('light' | 'dark' | 'system')[] = ['light', 'dark', 'system'];
+  themes: ('light' | 'dark' | 'system')[] = ['light', 'dark', 'system'];
 
   ngOnInit(): void {
-    this.clerkService.user$.subscribe((user) => {
+    this.authService.user$.subscribe((user) => {
       this.user = user;
     });
     this.themeService.theme$.subscribe((theme) => {
-      this.activeColorScheme = theme;
+      this.activeTheme = theme;
     });
   }
 
-  setColorScheme(scheme: 'light' | 'dark' | 'system') {
-    this.themeService.setTheme(scheme);
+  setTheme(scheme: 'light' | 'dark' | 'system') {
+    this.themeService.Theme = scheme;
   }
 
   async signIn() {
     try {
-      this.clerkService.openSignIn();
+      this.authService.signIn();
       this.appwriteService.saveUserData();
     } catch (error) {
       console.error('Login failed:', error);
@@ -77,7 +77,7 @@ export class HeaderComponent {
 
   async signOut() {
     try {
-      await this.clerkService.signOut();
+      await this.authService.signOut();
     } catch (error) {
       console.error('Sign out failed:', error);
     }

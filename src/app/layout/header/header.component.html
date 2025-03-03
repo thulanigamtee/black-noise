@@ -50,15 +50,15 @@
     <ng-template #menu>
       <hlm-menu class="w-fit">
         <hlm-menu-group>
-          @for(colorScheme of colorSchemes; track $index) {
+          @for(theme of themes; track $index) {
           <button
             hlmMenuItemCheckbox
-            [checked]="activeColorScheme === colorScheme"
-            (triggered)="(activeColorScheme === colorScheme)"
-            (click)="setColorScheme(colorScheme)"
+            [checked]="activeTheme === theme"
+            (triggered)="(activeTheme === theme)"
+            (click)="setTheme(theme)"
           >
             <hlm-menu-item-check />
-            <span class="capitalize">{{ colorScheme }}</span>
+            <span class="capitalize">{{ theme }}</span>
           </button>
           }
         </hlm-menu-group>
