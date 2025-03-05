@@ -60,11 +60,22 @@
 }
 
 body {
-  @apply px-[5%] py-4 mx-auto max-w-[1440px];
+  @apply px-[2%] py-4 mx-auto max-w-[1440px];
 }
 
 a {
   &.active {
     @apply bg-secondary;
+  }
+}
+
+.song {
+  &:hover {
+    .play-btn {
+      @apply bottom-[50%];
+    }
+    .volume-icon {
+      @apply hidden;
+    }
   }
 }
