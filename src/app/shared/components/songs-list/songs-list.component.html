@@ -1,11 +1,11 @@
 @if(songs$ | async) { @let songs = songs$ | async;
 <ul class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-6">
   @for(song of songs; track $index) {
-  <li class="cursor-pointer flex flex-col gap-2 relative overflow-hidden song">
+  <li class="flex flex-col gap-2 relative overflow-hidden song">
     <img
       [src]="song.thumbnail"
       [alt]="song.title + 'thumbnail'"
-      class="rounded-md"
+      class="rounded-md cursor-pointer"
       [ngStyle]="{
         filter:
           currentSong === song && isPlaying ? 'opacity(50%)' : 'opacity(1)'
@@ -46,7 +46,7 @@
         "
       />
     </button>
-    <div (click)="togglePlay(song)">
+    <div>
       <h3 class="font-bold text-sm">{{ song.title }}</h3>
       <p class="text-xs">{{ song.artist }}</p>
     </div>
