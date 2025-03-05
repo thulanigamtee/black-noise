@@ -1,0 +1,56 @@
+@if(songs$ | async) { @let songs = songs$ | async;
+<ul class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-6">
+  @for(song of songs; track $index) {
+  <li class="cursor-pointer flex flex-col gap-2 relative overflow-hidden song">
+    <img
+      [src]="song.thumbnail"
+      [alt]="song.title + 'thumbnail'"
+      class="rounded-md"
+      [ngStyle]="{
+        filter:
+          currentSong === song && isPlaying ? 'opacity(50%)' : 'opacity(1)'
+      }"
+      (click)="togglePlay(song)"
+    />
+    <button
+      hlmBtn
+      variant="ghost"
+      size="icon"
+      class="h-10 w-10 cursor-pointer absolute"
+    >
+      <ng-icon hlm size="sm" name="lucideHeart" />
+    </button>
+    @if(currentSong === song && isPlaying) {
+    <button
+      hlmBtn
+      variant="ghost"
+      size="icon"
+      class="h-10 w-10 cursor-pointer absolute left-[50%] translate-x-[-50%] bottom-[50%] volume-icon"
+    >
+      <ng-icon hlm size="lg" name="lucideVolume2" />
+    </button>
+    }
+
+    <button
+      hlmBtn
+      variant="ghost"
+      size="icon"
+      class="absolute cursor-pointer left-[50%] translate-x-[-50%] bottom-[100%] play-btn"
+      (click)="togglePlay(song)"
+    >
+      <ng-icon
+        hlm
+        size="lg"
+        [name]="
+          currentSong === song && isPlaying ? 'lucidePause' : 'lucidePlay'
+        "
+      />
+    </button>
+    <div (click)="togglePlay(song)">
+      <h3 class="font-bold text-sm">{{ song.title }}</h3>
+      <p class="text-xs">{{ song.artist }}</p>
+    </div>
+  </li>
+  }
+</ul>
+}
