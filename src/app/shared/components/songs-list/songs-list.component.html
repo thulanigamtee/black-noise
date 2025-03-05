@@ -1,5 +1,5 @@
 @if(songs$ | async) { @let songs = songs$ | async;
-<ul class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-6">
+<ul class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
   @for(song of songs; track $index) {
   <li class="flex flex-col gap-2 relative overflow-hidden song">
     <img
@@ -35,7 +35,7 @@
       hlmBtn
       variant="ghost"
       size="icon"
-      class="absolute cursor-pointer left-[50%] translate-x-[-50%] bottom-[100%] play-btn"
+      class="absolute cursor-pointer left-[50%] translate-x-[-50%] bottom-[50%] hidden play-btn"
       (click)="togglePlay(song)"
     >
       <ng-icon
