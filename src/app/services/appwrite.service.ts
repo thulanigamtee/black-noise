@@ -63,4 +63,33 @@ export class AppwriteService {
       songData
     );
   }
+
+  async fetchSongs(): Promise<Song[]> {
+    try {
+      const response = await this.database.listDocuments(
+        environment.appwrite.databaseId,
+        environment.appwrite.songsCollectionId
+      );
+
+      return response.documents.map((doc) => ({
+        title: doc['title'],
+        artist: doc['artist'],
+        thumbnail: this.getFileView(
+          doc['thumbnail'],
+          environment.appwrite.thumbnailBuckedId
+        ),
+        audio: this.getFileView(
+          doc['audio'],
+          environment.appwrite.audioBucketId
+        ),
+      }));
+    } catch (error) {
+      console.error('Error fetching songs:', error);
+      return [];
+    }
+  }
+
+  getFileView(fileId: string, bucketId: string) {
+    return this.storage.getFileView(bucketId, fileId);
+  }
 }
