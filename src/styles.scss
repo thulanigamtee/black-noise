@@ -72,7 +72,7 @@ a {
 .song {
   &:hover {
     .play-btn {
-      @apply bottom-[50%];
+      @apply block;
     }
     .volume-icon {
       @apply hidden;
