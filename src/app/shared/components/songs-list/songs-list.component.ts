@@ -22,15 +22,11 @@ export class SongsListComponent {
   isPlaying$ = this.audioPlayerService.isPlaying$;
 
   currentSong: Song | null = null;
-  isPlaying = false;
+  isPlaying: boolean = false;
 
   constructor() {
-    this.currentSong$.subscribe((song) => {
-      this.currentSong = song;
-    });
-    this.isPlaying$.subscribe((value) => {
-      this.isPlaying = value;
-    });
+    this.currentSong$.subscribe((song) => (this.currentSong = song));
+    this.isPlaying$.subscribe((isPlaying) => (this.isPlaying = isPlaying));
   }
 
   playSong(song: Song) {
