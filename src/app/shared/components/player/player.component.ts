@@ -22,19 +22,15 @@ export class PlayerComponent {
   duration$ = this.audioPlayerService.duration$;
   volume$ = this.audioPlayerService.volume$;
 
-  isPlaying = false;
+  isPlaying: boolean = false;
 
   constructor() {
-    this.isPlaying$.subscribe((value) => {
-      this.isPlaying = value;
-    });
+    this.isPlaying$.subscribe((value) => (this.isPlaying = value));
   }
 
   async play() {
     const song = await firstValueFrom(this.currentSong$);
-    if (song) {
-      this.audioPlayerService.playSong(song);
-    }
+    if (song) this.audioPlayerService.playSong(song);
   }
 
   pause() {
