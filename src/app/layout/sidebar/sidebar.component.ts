@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, viewChild } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { NgIcon } from '@ng-icons/core';
 import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
 import { HlmIconDirective } from '@spartan-ng/ui-icon-helm';
 import { HlmTooltipTriggerDirective } from '@spartan-ng/ui-tooltip-helm';
 import {
+  BrnDialogComponent,
   BrnDialogContentDirective,
   BrnDialogTriggerDirective,
 } from '@spartan-ng/brain/dialog';
@@ -42,4 +43,10 @@ export class SidebarComponent {
     { name: 'explore', icon: 'lucideCompass', path: 'explore' },
     { name: 'library', icon: 'lucideLibrary', path: 'library' },
   ];
+
+  public viewchildDialogRef = viewChild(BrnDialogComponent);
+
+  closeDialog() {
+    this.viewchildDialogRef()?.close({});
+  }
 }
