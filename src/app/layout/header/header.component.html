@@ -53,8 +53,7 @@
           @for(theme of themes; track $index) {
           <button
             hlmMenuItemCheckbox
-            [checked]="activeTheme === theme"
-            (triggered)="(activeTheme === theme)"
+            [checked]="(theme$ | async) === theme"
             (click)="setTheme(theme)"
           >
             <hlm-menu-item-check />

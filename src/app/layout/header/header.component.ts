@@ -20,6 +20,7 @@ import {
 import { HlmTooltipTriggerDirective } from '@spartan-ng/ui-tooltip-helm';
 import { AppwriteService } from '../../services/appwrite.service';
 import { AuthService } from '../../services/auth/auth.service';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-header',
@@ -39,27 +40,25 @@ import { AuthService } from '../../services/auth/auth.service';
     HlmAvatarComponent,
     HlmAvatarImageDirective,
     HlmTooltipTriggerDirective,
+    AsyncPipe,
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })
 export class HeaderComponent {
   authService = inject(AuthService);
-  appwriteService = inject(AppwriteService);
-  user: UserResource | null = null;
-
   themeService = inject(ThemeService);
-  activeTheme: string | null = null;
+  appwriteService = inject(AppwriteService);
+
+  theme$ = this.themeService.theme$;
+  user$ = this.authService.user$;
+
+  user: UserResource | null = null;
 
   themes: ('light' | 'dark' | 'system')[] = ['light', 'dark', 'system'];
 
-  ngOnInit(): void {
-    this.authService.user$.subscribe((user) => {
-      this.user = user;
-    });
-    this.themeService.theme$.subscribe((theme) => {
-      this.activeTheme = theme;
-    });
+  constructor() {
+    this.user$.subscribe((user) => (this.user = user));
   }
 
   setTheme(scheme: 'light' | 'dark' | 'system') {
