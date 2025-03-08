@@ -57,8 +57,16 @@
     </label>
     <hlm-error>Audio file is required</hlm-error>
   </hlm-form-field>
-  <button type="submit" hlmBtn class="mt-4 cursor-pointer">
+  <button
+    type="submit"
+    hlmBtn
+    class="mt-4 cursor-pointer"
+    [disabled]="isUploading"
+  >
+    @if(isUploading) {
+    <hlm-spinner />
+    } @else {
     <ng-icon hlm size="sm" class="mr-2" name="lucidePlus" />
-    Add song
+    Add song }
   </button>
 </form>
