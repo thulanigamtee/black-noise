@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, EventEmitter, inject, Output } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -17,6 +17,8 @@ import { HlmLabelDirective } from '@spartan-ng/ui-label-helm';
 import { Song } from './add-song-model';
 import { AppwriteService } from '../../../services/appwrite.service';
 import { environment } from '../../../../environments/environment';
+import { HlmSpinnerComponent } from '@spartan-ng/ui-spinner-helm';
+import { ToastService } from '../../../services/toast.service';
 
 @Component({
   selector: 'app-add-song-form',
@@ -29,6 +31,7 @@ import { environment } from '../../../../environments/environment';
     HlmLabelDirective,
     HlmButtonDirective,
     HlmIconDirective,
+    HlmSpinnerComponent,
   ],
   templateUrl: './add-song-form.component.html',
   styleUrl: './add-song-form.component.scss',
@@ -36,6 +39,15 @@ import { environment } from '../../../../environments/environment';
 export class AddSongFormComponent {
   private formBuilder = inject(FormBuilder);
   private appwriteService = inject(AppwriteService);
+  private toastService = inject(ToastService);
+
+  isUploading = false;
+
+  @Output() closeDialogEvent = new EventEmitter();
+
+  emitCloseDialogEvent() {
+    this.closeDialogEvent.emit();
+  }
 
   form = this.formBuilder.nonNullable.group<Song>({
     title: new FormControl('', {
@@ -65,10 +77,9 @@ export class AddSongFormComponent {
   }
 
   async submit() {
-    if (this.form.invalid) {
-      console.error('Form is invalid');
-      return;
-    }
+    if (this.form.invalid) return;
+
+    this.isUploading = true;
 
     try {
       const title = this.form.get('title')?.value || '';
@@ -76,9 +87,7 @@ export class AddSongFormComponent {
       const thumbnailFile = this.form.get('thumbnail')?.value as File | null;
       const audioFile = this.form.get('audio')?.value as File | null;
 
-      if (!thumbnailFile || !audioFile) {
-        throw new Error('Files are missing!');
-      }
+      if (!thumbnailFile || !audioFile) throw new Error('Files are missing!');
 
       const thumbnailId = await this.appwriteService.uploadFile(
         thumbnailFile,
@@ -96,10 +105,12 @@ export class AddSongFormComponent {
         audio: audioId,
       };
 
-      const response = await this.appwriteService.saveSong(songData);
-      console.log('Song uploaded:', response);
+      await this.appwriteService.saveSong(songData);
+      this.isUploading = false;
+      this.emitCloseDialogEvent();
+      this.toastService.showToast('Song successfully uploaded', 'success');
     } catch (error) {
-      console.error('Upload failed:', error);
+      this.toastService.showToast('Upload failed!', 'error');
     }
   }
 }
