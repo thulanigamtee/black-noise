@@ -42,9 +42,8 @@ export class AudioPlayerService {
     if (this.audio.volume > 0) {
       this.currentVolume = this.audio.volume;
       this.audio.volume = 0;
-    } else {
-      this.audio.volume = this.currentVolume;
-    }
+    } else this.audio.volume = this.currentVolume;
+
     this.volume$.next(this.audio.volume);
   }
 
