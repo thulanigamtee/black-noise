@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { Client, Databases, Storage, ID } from 'appwrite';
+import { Client, Databases, Storage, ID, Query } from 'appwrite';
 import { environment } from '../../environments/environment';
 import { AuthService } from './auth/auth.service';
 import { Song } from '../shared/models/song.model';
@@ -55,20 +55,54 @@ export class AppwriteService {
     return response.$id;
   }
 
-  async saveSong(songData: Song) {
-    return this.database.createDocument(
-      environment.appwrite.databaseId,
-      environment.appwrite.songsCollectionId,
-      ID.unique(),
-      songData
-    );
+  async uploadSong(songData: Song) {
+    const isAuthenticated = await this.authService.isAuthenticated();
+
+    if (!isAuthenticated) {
+      console.error('User not authenticated.');
+      return;
+    }
+
+    const userId = this.authService.user?.id;
+
+    if (!userId) {
+      console.error('User ID not found.');
+      return;
+    }
+
+    try {
+      const response = await this.database.createDocument(
+        environment.appwrite.databaseId,
+        environment.appwrite.songsCollectionId,
+        ID.unique(),
+        { ...songData, userId: userId }
+      );
+
+      console.log('Song uploaded:', response);
+      return response;
+    } catch (error) {
+      console.error('Error uploading song:', error);
+      throw error;
+    }
   }
 
   async fetchSongs(): Promise<Song[]> {
+    const isAuthenticated = await this.authService.isAuthenticated();
+
+    if (!isAuthenticated) {
+      console.error('User not authenticated.');
+      return [];
+    }
+
+    const userId = this.authService.user?.id;
+
+    if (!userId) throw new Error('User not authenticated');
+
     try {
       const response = await this.database.listDocuments(
         environment.appwrite.databaseId,
-        environment.appwrite.songsCollectionId
+        environment.appwrite.songsCollectionId,
+        [Query.equal('userId', userId)]
       );
 
       return response.documents.map((doc) => ({
