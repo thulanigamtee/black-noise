@@ -105,7 +105,7 @@ export class AddSongFormComponent {
         audio: audioId,
       };
 
-      await this.appwriteService.saveSong(songData);
+      await this.appwriteService.uploadSong(songData);
       this.isUploading = false;
       this.emitCloseDialogEvent();
       this.toastService.showToast('Song successfully uploaded', 'success');
