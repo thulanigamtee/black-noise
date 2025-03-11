@@ -44,4 +44,9 @@ export class AuthService {
   get user() {
     return this.clerk.user;
   }
+
+  async isAuthenticated(): Promise<boolean> {
+    await this.clerk.load();
+    return !!this.clerk.user;
+  }
 }
