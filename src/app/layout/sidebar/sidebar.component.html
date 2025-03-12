@@ -23,6 +23,7 @@
       size="icon"
       [hlmTooltipTrigger]="'add song'"
       aria-describedby="'add song button'"
+      [disabled]="user ? false : true"
     >
       <ng-icon hlm size="base" name="lucidePlus" />
     </button>
