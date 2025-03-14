@@ -1,49 +1,16 @@
 @if(currentSong$ | async) { @let song = currentSong$ | async;
-<footer
-  class="flex items-center justify-between bg-card p-2 fixed bottom-0 left-0 w-full"
->
-  <section class="flex items-center gap-3">
-    <img
-      [src]="song?.thumbnail"
-      [alt]="song?.title + 'thumbnail'"
-      class="w-16 h-16 rounded-md"
-    />
-    <div>
-      <h3 class="font-bold text-sm">{{ song?.title }}</h3>
-      <p class="text-xs">{{ song?.artist }}</p>
-    </div>
-    <button hlmBtn variant="ghost" size="icon" class="cursor-pointer">
-      <ng-icon hlm size="base" name="lucideHeart" />
-    </button>
-  </section>
-
-  <section class="flex flex-col items-center gap-2">
-    <div class="flex items-center">
-      <button hlmBtn variant="ghost" size="icon" class="cursor-pointer">
-        <ng-icon hlm size="sm" name="lucideSkipBack" />
-      </button>
-      <button
-        hlmBtn
-        variant="ghost"
-        size="icon"
-        class="cursor-pointer"
-        (click)="isPlaying ? pause() : play()"
-      >
-        <ng-icon
-          hlm
-          size="lg"
-          [name]="isPlaying ? 'lucidePause' : 'lucidePlay'"
-        />
-      </button>
-      <button hlmBtn variant="ghost" size="icon" class="cursor-pointer">
-        <ng-icon hlm size="sm" name="lucideSkipForward" />
-      </button>
-    </div>
+<footer class="bg-card fixed bottom-0 left-0 w-full p-2 flex gap-2">
+  <img
+    [src]="song?.thumbnail"
+    [alt]="song?.title + 'thumbnail'"
+    class="w-16 h-16 rounded-md md:w-16 md:h-16"
+  />
+  <section class="flex flex-col w-full">
     <div class="flex items-center gap-2">
       <span class="text-xs">{{ currentTime$ | async | time }}</span>
       <input
         type="range"
-        class="h-1 bg-primary rounded-lg appearance-none cursor-pointer accent-accent w-[40vw] max-w-[400px]"
+        class="h-1 bg-red-500 rounded-full appearance-none cursor-pointer accent-primary w-full ease-in-out duration-100"
         [min]="0"
         [max]="duration$ | async"
         [value]="currentTime$ | async"
@@ -51,30 +18,59 @@
       />
       <span class="text-xs">{{ duration$ | async | time }}</span>
     </div>
-  </section>
-  <section class="flex items-center gap-2">
-    <input
-      type="range"
-      min="0"
-      max="1"
-      step="0.1"
-      class="h-1 bg-primary rounded-lg appearance-none cursor-pointer accent-accent"
-      [value]="volume$ | async"
-      (input)="setVolume($event)"
-    />
-    <button
-      hlmBtn
-      variant="ghost"
-      size="icon"
-      class="cursor-pointer"
-      (click)="toggleMute()"
-    >
-      <ng-icon
-        hlm
-        size="sm"
-        [name]="(volume$ | async) === 0 ? 'lucideVolumeOff' : 'lucideVolume2'"
-      />
-    </button>
+    <div class="flex justify-between items-end">
+      <div>
+        <h3 class="font-bold text-sm">{{ song?.title }}</h3>
+        <p class="text-xs">{{ song?.artist }}</p>
+      </div>
+      <div class="flex items-center">
+        <button hlmBtn variant="ghost" size="icon" class="cursor-pointer">
+          <ng-icon hlm size="sm" name="lucideSkipBack" />
+        </button>
+        <button
+          hlmBtn
+          variant="ghost"
+          size="icon"
+          class="cursor-pointer"
+          (click)="isPlaying ? pause() : play()"
+        >
+          <ng-icon
+            hlm
+            size="lg"
+            [name]="isPlaying ? 'lucidePause' : 'lucidePlay'"
+          />
+        </button>
+        <button hlmBtn variant="ghost" size="icon" class="cursor-pointer">
+          <ng-icon hlm size="sm" name="lucideSkipForward" />
+        </button>
+      </div>
+      <div class="items-center gap-2 hidden sm:flex">
+        <button
+          hlmBtn
+          variant="ghost"
+          size="icon"
+          class="cursor-pointer"
+          (click)="toggleMute()"
+        >
+          <ng-icon
+            hlm
+            size="sm"
+            [name]="
+              (volume$ | async) === 0 ? 'lucideVolumeOff' : 'lucideVolume2'
+            "
+          />
+        </button>
+        <input
+          type="range"
+          min="0"
+          max="1"
+          step="0.1"
+          class="h-1 bg-red-500 rounded-lg appearance-none cursor-pointer accent-primary"
+          [value]="volume$ | async"
+          (input)="setVolume($event)"
+        />
+      </div>
+    </div>
   </section>
 </footer>
 }
