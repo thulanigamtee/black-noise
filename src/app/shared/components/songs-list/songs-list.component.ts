@@ -27,6 +27,10 @@ export class SongsListComponent {
   constructor() {
     this.currentSong$.subscribe((song) => (this.currentSong = song));
     this.isPlaying$.subscribe((isPlaying) => (this.isPlaying = isPlaying));
+
+    this.songs$.then((songs) => {
+      this.audioPlayerService.setPlaylist(songs);
+    });
   }
 
   playSong(song: Song) {
