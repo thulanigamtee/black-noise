@@ -24,7 +24,13 @@
         <p class="text-xs">{{ song?.artist }}</p>
       </div>
       <div class="flex items-center">
-        <button hlmBtn variant="ghost" size="icon" class="cursor-pointer">
+        <button
+          hlmBtn
+          variant="ghost"
+          size="icon"
+          class="cursor-pointer"
+          (click)="skipBack()"
+        >
           <ng-icon hlm size="sm" name="lucideSkipBack" />
         </button>
         <button
@@ -40,7 +46,13 @@
             [name]="isPlaying ? 'lucidePause' : 'lucidePlay'"
           />
         </button>
-        <button hlmBtn variant="ghost" size="icon" class="cursor-pointer">
+        <button
+          hlmBtn
+          variant="ghost"
+          size="icon"
+          class="cursor-pointer"
+          (click)="skipForward()"
+        >
           <ng-icon hlm size="sm" name="lucideSkipForward" />
         </button>
       </div>

@@ -37,9 +37,17 @@ export class PlayerComponent {
     this.audioPlayerService.pause();
   }
 
+  skipBack() {
+    this.audioPlayerService.skipBack();
+  }
+
+  skipForward() {
+    this.audioPlayerService.skipForward();
+  }
+
   seek(event: Event) {
-    const time = (event.target as HTMLInputElement).value;
-    this.audioPlayerService.seek(Number(time));
+    const time = (event.target as HTMLInputElement).valueAsNumber;
+    this.audioPlayerService.seek(time);
   }
 
   setVolume(event: Event) {
