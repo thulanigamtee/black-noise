@@ -33,17 +33,9 @@ export class SongsListComponent {
     });
   }
 
-  playSong(song: Song) {
-    this.audioPlayerService.playSong(song);
-  }
-
-  pause() {
-    this.audioPlayerService.pause();
-  }
-
   togglePlay(song: Song) {
     if (song === this.currentSong && this.isPlaying) {
-      this.pause();
-    } else this.playSong(song);
+      this.audioPlayerService.pause();
+    } else this.audioPlayerService.playSong(song);
   }
 }
