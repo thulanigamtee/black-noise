@@ -5,6 +5,8 @@ import { Song } from '../shared/models/song.model';
 @Injectable({ providedIn: 'root' })
 export class AudioPlayerService {
   private audio = new Audio();
+  private playlist: Song[] = [];
+  private currentSongIndex = 0;
 
   private currentSongSubject = new BehaviorSubject<Song | null>(null);
   private isPlayingSubject = new BehaviorSubject<boolean>(false);
@@ -31,6 +33,10 @@ export class AudioPlayerService {
     this.audio.volume = this.currentVolume;
   }
 
+  setPlaylist(songs: Song[]) {
+    this.playlist = songs;
+  }
+
   setVolume(event: Event) {
     const volume = (event.target as HTMLInputElement).valueAsNumber;
     this.currentVolume = volume;
@@ -48,12 +54,15 @@ export class AudioPlayerService {
   }
 
   playSong(song: Song) {
-    if (this.currentSongSubject.value?.audio !== song.audio) {
+    const songIndex = this.playlist.findIndex((s) => s.audio === song.audio);
+
+    if (songIndex !== -1) {
+      this.currentSongIndex = songIndex;
       this.audio.src = song.audio;
       this.currentSongSubject.next(song);
+      this.audio.play();
+      this.isPlayingSubject.next(true);
     }
-    this.audio.play();
-    this.isPlayingSubject.next(true);
   }
 
   pause() {
@@ -63,5 +72,17 @@ export class AudioPlayerService {
 
   seek(time: number) {
     this.audio.currentTime = time;
+  }
+
+  skipBack() {
+    if (this.currentSongIndex > 0) {
+      this.playSong(this.playlist[this.currentSongIndex - 1]);
+    }
+  }
+
+  skipForward() {
+    if (this.currentSongIndex < this.playlist.length - 1) {
+      this.playSong(this.playlist[this.currentSongIndex + 1]);
+    }
   }
 }
