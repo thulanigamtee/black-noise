@@ -19,6 +19,7 @@ import { AppwriteService } from '../../../services/appwrite.service';
 import { environment } from '../../../../environments/environment';
 import { HlmSpinnerComponent } from '@spartan-ng/ui-spinner-helm';
 import { ToastService } from '../../../services/toast.service';
+import { catchError, forkJoin, of, switchMap, tap } from 'rxjs';
 
 @Component({
   selector: 'app-add-song-form',
@@ -76,41 +77,50 @@ export class AddSongFormComponent {
     }
   }
 
-  async submit() {
+  submit(): void {
     if (this.form.invalid) return;
-
     this.isUploading = true;
-
-    try {
-      const title = this.form.get('title')?.value || '';
-      const artist = this.form.get('artist')?.value || '';
-      const thumbnailFile = this.form.get('thumbnail')?.value as File | null;
-      const audioFile = this.form.get('audio')?.value as File | null;
-
-      if (!thumbnailFile || !audioFile) throw new Error('Files are missing!');
-
-      const thumbnailId = await this.appwriteService.uploadFile(
+    const title = this.form.get('title')?.value || '';
+    const artist = this.form.get('artist')?.value || '';
+    const thumbnailFile = this.form.get('thumbnail')?.value as File | null;
+    const audioFile = this.form.get('audio')?.value as File | null;
+    if (!thumbnailFile || !audioFile) {
+      this.toastService.showToast('Files are missing!', 'error');
+      this.isUploading = false;
+      return;
+    }
+    forkJoin({
+      thumbnailId: this.appwriteService.uploadFile(
         thumbnailFile,
         environment.appwrite.thumbnailBuckedId
-      );
-      const audioId = await this.appwriteService.uploadFile(
+      ),
+      audioId: this.appwriteService.uploadFile(
         audioFile,
         environment.appwrite.audioBucketId
-      );
-
-      const songData = {
-        title,
-        artist,
-        thumbnail: thumbnailId,
-        audio: audioId,
-      };
-
-      await this.appwriteService.uploadSong(songData);
-      this.isUploading = false;
-      this.emitCloseDialogEvent();
-      this.toastService.showToast('Song successfully uploaded', 'success');
-    } catch (error) {
-      this.toastService.showToast('Upload failed!', 'error');
-    }
+      ),
+    })
+      .pipe(
+        switchMap(({ thumbnailId, audioId }) => {
+          const songData = {
+            title,
+            artist,
+            thumbnail: thumbnailId,
+            audio: audioId,
+          };
+          return this.appwriteService.uploadSong(songData);
+        }),
+        tap(() => {
+          this.isUploading = false;
+          this.emitCloseDialogEvent();
+          this.toastService.showToast('Song successfully uploaded', 'success');
+        }),
+        catchError((error) => {
+          console.error('Upload error:', error);
+          this.isUploading = false;
+          this.toastService.showToast('Upload failed!', 'error');
+          return of(null);
+        })
+      )
+      .subscribe();
   }
 }
