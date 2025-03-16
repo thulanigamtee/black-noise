@@ -44,4 +44,10 @@ export class SongsListComponent {
       this.audioPlayerService.pause();
     } else this.audioPlayerService.playSong(song);
   }
+
+  toggleLike(song: Song) {
+    this.appwriteService.toggleLike(song).then(() => {
+      song.liked = !song.liked;
+    });
+  }
 }
