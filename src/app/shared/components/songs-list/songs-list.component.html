@@ -17,6 +17,8 @@
       variant="ghost"
       size="icon"
       class="h-10 w-10 cursor-pointer absolute"
+      (click)="toggleLike(song)"
+      [ngClass]="song.liked ? 'bg-red-500' : ''"
     >
       <ng-icon hlm size="sm" name="lucideHeart" />
     </button>
