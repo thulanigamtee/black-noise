@@ -59,9 +59,16 @@ export class AppwriteService {
     }
   }
 
-  async uploadFile(file: File, bucketId: string): Promise<string> {
-    const response = await this.storage.createFile(bucketId, ID.unique(), file);
-    return response.$id;
+  uploadFile(file: File, bucketId: string): Observable<string> {
+    return from(this.storage.createFile(bucketId, ID.unique(), file)).pipe(
+      map((response) => response.$id),
+      catchError((error) => {
+        console.error('Error uploading file:', error);
+        return throwError(
+          () => new Error('Failed to upload file. Please try again.')
+        );
+      })
+    );
   }
 
   async uploadSong(songData: Song) {
