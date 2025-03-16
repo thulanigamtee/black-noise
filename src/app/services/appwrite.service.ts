@@ -3,6 +3,15 @@ import { Client, Databases, Storage, ID, Query } from 'appwrite';
 import { environment } from '../../environments/environment';
 import { AuthService } from './auth/auth.service';
 import { Song } from '../shared/models/song.model';
+import {
+  catchError,
+  from,
+  map,
+  Observable,
+  of,
+  switchMap,
+  throwError,
+} from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -86,41 +95,49 @@ export class AppwriteService {
     }
   }
 
-  async fetchSongs(): Promise<Song[]> {
-    const isAuthenticated = await this.authService.isAuthenticated();
+  fetchSongs(): Observable<Song[]> {
+    return from(this.authService.isAuthenticated()).pipe(
+      switchMap((isAuthenticated) => {
+        if (!isAuthenticated) {
+          console.error('User not authenticated.');
+          return of([]);
+        }
 
-    if (!isAuthenticated) {
-      console.error('User not authenticated.');
-      return [];
-    }
+        const userId = this.authService.user?.id;
+        if (!userId) {
+          console.error('User not authenticated.');
+          return throwError(() => new Error('User not authenticated'));
+        }
 
-    const userId = this.authService.user?.id;
-
-    if (!userId) throw new Error('User not authenticated');
-
-    try {
-      const response = await this.database.listDocuments(
-        environment.appwrite.databaseId,
-        environment.appwrite.songsCollectionId,
-        [Query.equal('userId', userId)]
-      );
-
-      return response.documents.map((doc) => ({
-        title: doc['title'],
-        artist: doc['artist'],
-        thumbnail: this.getFileView(
-          doc['thumbnail'],
-          environment.appwrite.thumbnailBuckedId
-        ),
-        audio: this.getFileView(
-          doc['audio'],
-          environment.appwrite.audioBucketId
-        ),
-      }));
-    } catch (error) {
-      console.error('Error fetching songs:', error);
-      return [];
-    }
+        return from(
+          this.database.listDocuments(
+            environment.appwrite.databaseId,
+            environment.appwrite.songsCollectionId,
+            [Query.equal('userId', userId)]
+          )
+        ).pipe(
+          map((response) =>
+            response.documents.map((doc) => ({
+              title: doc['title'],
+              artist: doc['artist'],
+              thumbnail: this.getFileView(
+                doc['thumbnail'],
+                environment.appwrite.thumbnailBuckedId
+              ),
+              audio: this.getFileView(
+                doc['audio'],
+                environment.appwrite.audioBucketId
+              ),
+              liked: doc['liked'],
+            }))
+          ),
+          catchError((error) => {
+            console.error('Error fetching songs:', error);
+            return of([]);
+          })
+        );
+      })
+    );
   }
 
   getFileView(fileId: string, bucketId: string) {
