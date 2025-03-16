@@ -71,35 +71,44 @@ export class AppwriteService {
     );
   }
 
-  async uploadSong(songData: Song) {
-    const isAuthenticated = await this.authService.isAuthenticated();
+  uploadSong(songData: Omit<Song, 'id'>): Observable<Song> {
+    return from(this.authService.isAuthenticated()).pipe(
+      switchMap((isAuthenticated) => {
+        if (!isAuthenticated) {
+          console.error('User not authenticated.');
+          return throwError(() => new Error('User not authenticated.'));
+        }
 
-    if (!isAuthenticated) {
-      console.error('User not authenticated.');
-      return;
-    }
+        const userId = this.authService.user?.id;
 
-    const userId = this.authService.user?.id;
+        if (!userId) {
+          console.error('User ID not found.');
+          return throwError(() => new Error('User ID not found.'));
+        }
 
-    if (!userId) {
-      console.error('User ID not found.');
-      return;
-    }
-
-    try {
-      const response = await this.database.createDocument(
-        environment.appwrite.databaseId,
-        environment.appwrite.songsCollectionId,
-        ID.unique(),
-        { ...songData, userId: userId }
-      );
-
-      console.log('Song uploaded:', response);
-      return response;
-    } catch (error) {
-      console.error('Error uploading song:', error);
-      throw error;
-    }
+        return from(
+          this.database.createDocument(
+            environment.appwrite.databaseId,
+            environment.appwrite.songsCollectionId,
+            ID.unique(), // Generates the ID
+            { ...songData, userId: userId }
+          )
+        ).pipe(
+          map((response: any) => ({
+            id: response.$id, // Extract the generated ID
+            title: response.title,
+            artist: response.artist,
+            thumbnail: response.thumbnail,
+            audio: response.audio,
+            liked: response.liked || false,
+          })),
+          catchError((error) => {
+            console.error('Error uploading song:', error);
+            return throwError(() => error);
+          })
+        );
+      })
+    );
   }
 
   fetchSongs(): Observable<Song[]> {
