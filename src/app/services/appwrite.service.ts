@@ -125,6 +125,7 @@ export class AppwriteService {
         ).pipe(
           map((response) =>
             response.documents.map((doc) => ({
+              id: doc.$id,
               title: doc['title'],
               artist: doc['artist'],
               thumbnail: this.getFileView(
@@ -149,5 +150,16 @@ export class AppwriteService {
 
   getFileView(fileId: string, bucketId: string) {
     return this.storage.getFileView(bucketId, fileId);
+  }
+
+  async toggleLike(song: Song): Promise<void> {
+    const updatedSong = { ...song, liked: !song.liked };
+
+    await this.database.updateDocument(
+      environment.appwrite.databaseId,
+      environment.appwrite.songsCollectionId,
+      song.id,
+      { liked: updatedSong.liked }
+    );
   }
 }
