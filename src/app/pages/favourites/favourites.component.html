@@ -1,0 +1,84 @@
+<!-- @if(favourites$ | async) { @let favourites = favourites$ | async;
+<ul class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
+  @for(favourite of favourites; track $index) {
+  <li class="flex flex-col gap-2 relative overflow-hidden song">
+    <img
+      [src]="favourite.thumbnail"
+      [alt]="favourite.title + 'thumbnail'"
+      class="rounded-md cursor-pointer"
+      [ngStyle]="{
+        filter:
+          currentSong === favourite && isPlaying ? 'opacity(50%)' : 'opacity(1)'
+      }"
+      (click)="togglePlay(favourite)"
+    />
+    <button
+      hlmBtn
+      variant="ghost"
+      size="icon"
+      class="h-10 w-10 cursor-pointer absolute"
+      (click)="toggleLike(favourite)"
+      [ngClass]="favourite.liked ? 'bg-red-500' : ''"
+    >
+      <ng-icon hlm size="sm" name="lucideHeart" />
+    </button>
+    @if(currentSong === favourite && isPlaying) {
+    <button
+      hlmBtn
+      variant="ghost"
+      size="icon"
+      class="h-10 w-10 cursor-pointer absolute left-[50%] translate-x-[-50%] bottom-[50%] volume-icon"
+    >
+      <ng-icon hlm size="lg" name="lucideVolume2" />
+    </button>
+    }
+    <button
+      hlmBtn
+      variant="ghost"
+      size="icon"
+      class="absolute cursor-pointer left-[50%] translate-x-[-50%] bottom-[50%] hidden play-btn"
+      (click)="togglePlay(favourite)"
+    >
+      <ng-icon
+        hlm
+        size="lg"
+        [name]="
+          currentSong === favourite && isPlaying ? 'lucidePause' : 'lucidePlay'
+        "
+      />
+    </button>
+    <div>
+      <h3 class="font-bold text-sm">{{ favourite.title }}</h3>
+      <p class="text-xs">{{ favourite.artist }}</p>
+    </div>
+  </li>
+  }
+</ul>
+} -->
+<!-- @if(songs && songs.length > 0) {
+<ul>
+  @for(song of songs; track $index) {
+  <li>
+    <img
+      [src]="song.thumbnail"
+      [alt]="song.title + 'thumbnail'"
+      class="rounded-md cursor-pointer"
+    />
+  </li>
+  }
+</ul>
+}@else {
+<p>nothing to see here!</p>
+} -->
+
+@if(songs && songs.length > 0) {
+<ul>
+  @for(song of songs; track $index) {
+  <li>
+    <img [src]="song.thumbnail" />
+  </li>
+  }
+</ul>
+} @else {
+<p>nothing to see here!</p>
+}
