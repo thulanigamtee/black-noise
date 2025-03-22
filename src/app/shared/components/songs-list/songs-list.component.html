@@ -1,4 +1,4 @@
-@if(songs$ | async) { @let songs = songs$ | async;
+@if(songs && songs.length > 0) {
 <ul class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
   @for(song of songs; track $index) {
   <li class="flex flex-col gap-2 relative overflow-hidden song">
