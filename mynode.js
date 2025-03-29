@@ -7,9 +7,9 @@ const dotenv = require("dotenv").config({ path: "src/.env" });
 const envFile = `export const environment = {
   production: true,
   appwrite: {
-    endpoint: ''${process.env.endpoint}'',
-    projectId:''${process.env.projectId}'',
-    databaseId: ''${process.env.databaseId}'',
+    endpoint: '${process.env.endpoint}',
+    projectId:'${process.env.projectId}',
+    databaseId: '${process.env.databaseId}',
     usersCollectionId: '${process.env.usersCollectionId}',
     songsCollectionId: '${process.env.songsCollectionId}',
     audioBucketId: '${process.env.audioBucketId}',
