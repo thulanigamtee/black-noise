@@ -1,4 +1,10 @@
-<section class="w-full flex flex-col items-center gap-6">
+<section
+  class="w-full flex flex-col items-center gap-6 overflow-y-auto h-[calc(100vh-120px)] pb-4"
+  [ngStyle]="{
+  height:
+    (currentSong$ | async) ? 'calc(100vh - 200px)' : 'calc(100vh-120px)',
+}"
+>
   <h1 class="text-lg capitalize font-bold">add song</h1>
   <app-add-song-form />
 </section>
