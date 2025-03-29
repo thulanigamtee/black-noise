@@ -12,7 +12,7 @@
       }"
       (click)="togglePlay(song)"
     />
-    <button
+    <!-- <button
       hlmBtn
       variant="ghost"
       size="icon"
@@ -21,7 +21,7 @@
       [ngClass]="song.liked ? 'bg-red-500' : ''"
     >
       <ng-icon hlm size="sm" name="lucideHeart" />
-    </button>
+    </button> -->
     @if(currentSong === song && isPlaying) {
     <button
       hlmBtn
