@@ -7,6 +7,7 @@ export class AudioPlayerService {
   private audio = new Audio();
   private playlist: Song[] = [];
   private currentSongIndex = 0;
+  private lastPlaybackTime = 0;
 
   private currentSongSubject = new BehaviorSubject<Song | null>(null);
   private isPlayingSubject = new BehaviorSubject<boolean>(false);
@@ -57,15 +58,25 @@ export class AudioPlayerService {
     const songIndex = this.playlist.findIndex((s) => s.audio === song.audio);
 
     if (songIndex !== -1) {
-      this.currentSongIndex = songIndex;
-      this.audio.src = song.audio;
+      if (
+        this.currentSongIndex !== songIndex ||
+        this.audio.src !== song.audio
+      ) {
+        this.currentSongIndex = songIndex;
+        this.audio.src = song.audio;
+        this.audio.load();
+        this.lastPlaybackTime = 0;
+      }
+
       this.currentSongSubject.next(song);
+      this.audio.currentTime = this.lastPlaybackTime;
       this.audio.play();
       this.isPlayingSubject.next(true);
     }
   }
 
   pause() {
+    this.lastPlaybackTime = this.audio.currentTime;
     this.audio.pause();
     this.isPlayingSubject.next(false);
   }
