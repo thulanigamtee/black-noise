@@ -1,59 +1,48 @@
-# BlackNoise
+# 🎧 Black Noise - Music Application
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.0.2.
+![black-noise](https://github.com/user-attachments/assets/e961cbfb-9740-4c84-a312-cd51f344eff1)
 
-## Development server
 
-To start a local development server, run:
+**Black Noise** is a full-stack music player application that allows users to upload, play, and manage songs with ease. Featuring a sleek and responsive UI, it offers seamless playback functionality with essential controls such as play, pause, skip, and seek.
 
-```bash
-ng serve
-```
+## 🚀 Features
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+- 🔐 User authentication powered by **Clerk**
+- ☁️ Upload and manage songs via **Appwrite**
+- 🎵 Music playback with play, pause, skip, and seek controls
+- 🎧 Responsive and modern UI with **Tailwind CSS** and **SpartanUI**
+- 📱 Mobile-first and fully responsive design
+- 🧭 Intuitive navigation and clean layout
 
-## Code scaffolding
+## 🛠 Tech Stack
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+- **Frontend:** [Angular](https://angular.io/)
+- **Styling:** [Tailwind CSS](https://tailwindcss.com/), [SpartanUI](https://spartan.ui/)
+- **Authentication:** [Clerk](https://clerk.dev/)
+- **Backend & Storage:** [Appwrite](https://appwrite.io/)
 
-```bash
-ng generate component component-name
-```
+## 📦 Installation
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/your-username/black-noise.git
+   cd black-noise
 
-```bash
-ng generate --help
-```
+2. **Install dependencies:**
+   ```bash
+   npm install
 
-## Building
+3. Set up environment variables: Create an .env file and configure your Clerk and Appwrite credentials.
+4. **Run the application:**
+   ```bash
+   ng serve
 
-To build the project run:
+## 📌 Notes
+Make sure you have an active Appwrite project and configured storage buckets.
 
-```bash
-ng build
-```
+Clerk configuration must include correct frontend and API keys.
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
 
-## Running unit tests
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
 
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+### Built with ❤️ and Angular
